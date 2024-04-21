@@ -1,0 +1,74 @@
+.trending-container {
+  padding: 20px;
+}
+
+.artist-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.artist-item {
+  width: calc(25% - 20px);
+  margin: 10px;
+  background-color: rgb(30, 42, 62);
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease-in-out;
+}
+
+.artist-item:hover {
+  transform: scale(1.05);
+}
+
+.artist-details {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.artist-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.artist-scroll-container {
+  height: 567px;
+  overflow-y: auto;
+}
+
+
+.artist-info {
+  flex: 1;
+}
+
+.artist-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #c4d0e3;
+  margin-bottom: 5px;
+}
+
+.artist-popularity,
+.artist-genres {
+  font-size: 14px;
+  color: #c4d0e37c;
+  margin: 0;
+}
+
+.play-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.play-button:hover {
+  transform: scale(1.1);
+}
+
+.play-button svg {
+  transition: transform 0.3s ease-in-out;
+}

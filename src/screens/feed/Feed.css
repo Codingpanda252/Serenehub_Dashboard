@@ -1,0 +1,109 @@
+.screen-container {
+  padding: 20px;
+}
+
+.mood-status {
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.over-the-top {
+  color: green;
+}
+
+.bit-down {
+  color: red;
+}
+
+.stressed {
+  color: orange;
+}
+
+.mood-swings {
+  color: pink;
+}
+
+.suggest-button {
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.suggest-button:hover {
+  background-color: #45a049;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.suggestions-container {
+  width: 94%;
+  height: 90%;
+  padding: 3%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: auto;
+  justify-content: space-between;
+}
+
+.suggestion {
+  position: relative;
+  width: 15%;
+  height: 35%;
+  border-radius: 20px;
+  background-color: rgb(30, 42, 62);
+  border: 1px solid rgba(54, 69, 98, 0.18);
+  padding: 1%;
+  margin-bottom: 2%;
+  background: rgb(30, 42, 62);
+  background: linear-gradient(75deg, rgb(40, 58, 88) 0%, rgba(54, 69, 98, 0) 100%);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.suggestion:hover {
+  transform: scale(1.02);
+}
+
+.suggestion img {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 15px;
+}
+
+.suggestion p {
+  font-weight: 800;
+  font-size: 16px;
+  color: #c4d0e3;
+  margin: 10px 0px;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-align: center;
+}
+
+.play-icon-container {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}
+
+.play-icon {
+  color: #fff;
+  font-size: 24px;
+}
