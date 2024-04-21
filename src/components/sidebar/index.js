@@ -14,19 +14,9 @@ export default function Sidebar() {
   );
 
   useEffect(() => {
-    const checkForError = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const error = urlParams.get("error");
-      if (error) {
-        handleError(error);
-      }
-    };
-
     apiClient.get("me").then((response) => {
       setImage(response.data.images[0].url);
     });
-
-    checkForError();
   }, []);
 
   const handleSignOut = () => {
