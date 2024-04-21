@@ -8,6 +8,8 @@ import "./Trending.css";
 const Trending = () => {
   const [artists, setArtists] = useState([]);
   const [error, setError] = useState(null);
+  const [selectedArtist, setSelectedArtist] = useState(null);
+  const [topTracks, setTopTracks] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,11 +42,14 @@ const Trending = () => {
           config
         );
 
-        // Extract artists from the response
-        const trendingArtists =
-          responseTrending.data?.albums?.items?.flatMap(
-            (album) => album.artists
-          );
+        // Extract artists from the response and remove duplicates
+        const trendingArtists = [
+          ...new Map(
+            responseTrending.data?.albums?.items
+              ?.flatMap((album) => album.artists)
+              ?.map((artist) => [artist.id, artist])
+          ).values(),
+        ];
 
         // Fetch additional details for each artist
         const artistsWithDetails = await Promise.all(
@@ -57,14 +62,13 @@ const Trending = () => {
               `https://api.spotify.com/v1/artists/${artist.id}/top-tracks?country=US`,
               config
             );
-            const playableTrack = topTracks.data.tracks[0]; // Get the first track as playable example
 
             return {
               ...artist,
               imageUrl: artistDetails.data.images[0]?.url,
               popularity: artistDetails.data.popularity,
               genres: artistDetails.data.genres,
-              playableTrack,
+              topTracks: topTracks.data.tracks,
             };
           })
         );
@@ -78,25 +82,34 @@ const Trending = () => {
     fetchTrendingArtists();
   }, []);
 
-  const handlePlayButtonClick = (id) => {
-    navigate("/player", { state: { id: id } });
+  const handlePlayButtonClick = (track) => {
+    navigate("/player", { state: { track } });
+  };
+
+  const handleArtistClick = (artist) => {
+    setSelectedArtist(artist);
+    setTopTracks(artist.topTracks);
   };
 
   return (
     <div className="trending-container">
-      <h1>Trending Artists</h1>
+      <h1 className="page-title">Trending Artists</h1>
       {error && <div>Error: {error}</div>}
       <div className="artist-scroll-container">
         <div className="artist-container">
           {artists.map((artist, index) => (
-            <div key={index} className="artist-item">
-              <div className="artist-details">
-                <img
-                  className="artist-image"
-                  src={artist.imageUrl}
-                  alt={artist.name}
-                />
-                <div className="artist-info">
+            <div
+              key={index}
+              className="artist-item"
+              onClick={() => handleArtistClick(artist)}
+            >
+              <img
+                className="artist-image"
+                src={artist.imageUrl}
+                alt={artist.name}
+              />
+              <div className="artist-overlay">
+                <div className="artist-details">
                   <h2 className="artist-name">{artist.name}</h2>
                   <p className="artist-popularity">
                     Popularity: {artist.popularity}
@@ -105,23 +118,59 @@ const Trending = () => {
                     Genres: {artist.genres.join(", ")}
                   </p>
                 </div>
-              </div>
-              {artist.playableTrack && (
-                <button
-                  className="play-button"
-                  onClick={() => handlePlayButtonClick(artist.playableTrack.id)}
-                >
-                  <IconContext.Provider
-                    value={{ size: "30px", color: "#E99D72" }}
+                {artist.topTracks && artist.topTracks.length > 0 && (
+                  <button
+                    className="play-button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePlayButtonClick(artist.topTracks[0]);
+                    }}
                   >
-                    <AiFillPlayCircle />
-                  </IconContext.Provider>
-                </button>
-              )}
+                    <IconContext.Provider
+                      value={{ size: "20px", color: "#E99D72" }}
+                    >
+                      <AiFillPlayCircle />
+                    </IconContext.Provider>
+                  </button>
+                )}
+              </div>
             </div>
           ))}
         </div>
       </div>
+      {selectedArtist && (
+        <div
+          className="top-tracks-overlay"
+          onClick={() => setSelectedArtist(null)}
+        >
+          <div className="top-tracks-container">
+            <h2 className="overlay-title">
+              Top Tracks of {selectedArtist.name}
+            </h2>
+            <div className="top-tracks">
+              {topTracks.map((track, index) => (
+                <div
+                  key={index}
+                  className="track-item"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePlayButtonClick(track);
+                  }}
+                >
+                  <p>{track.name}</p>
+                  <button className="play-button">
+                    <IconContext.Provider
+                      value={{ size: "20px", color: "#E99D72" }}
+                    >
+                      <AiFillPlayCircle />
+                    </IconContext.Provider>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

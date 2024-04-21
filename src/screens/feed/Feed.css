@@ -58,10 +58,25 @@
   justify-content: space-between;
 }
 
+.suggestion-group {
+  width: 30%; 
+  height: 90%; 
+  margin: 0 10px;
+}
+
+.suggested-artists {
+  margin: 0 auto; 
+}
+
+.suggested-playlists {
+  margin-left: auto; 
+}
+
+
 .suggestion {
   position: relative;
-  width: 15%;
-  height: 35%;
+  width: 50%;
+  height: 50%;
   border-radius: 20px;
   background-color: rgb(30, 42, 62);
   border: 1px solid rgba(54, 69, 98, 0.18);
@@ -72,6 +87,8 @@
   transition: all 0.2s ease;
   cursor: pointer;
 }
+
+
 
 .suggestion:hover {
   transform: scale(1.02);
@@ -94,7 +111,6 @@
   -webkit-line-clamp: 2;
   line-clamp: 2;
   -webkit-box-orient: vertical;
-  text-align: center;
 }
 
 .play-icon-container {
@@ -107,3 +123,4 @@
   color: #fff;
   font-size: 24px;
 }
+

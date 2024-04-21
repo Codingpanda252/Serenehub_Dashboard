@@ -32,3 +32,19 @@
 a {
   text-decoration: none;
 }
+
+.auth-heading {
+  color: #fff;
+  font-size: 100px;
+  margin-bottom: 10px; 
+}
+
+.tagline {
+  color: #ccc;
+  font-size: 20px;
+}
+
+.auth-connect{
+  color: #ccc;
+  font-size: 20px
+}

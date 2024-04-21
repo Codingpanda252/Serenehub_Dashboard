@@ -12,11 +12,28 @@ export default function Sidebar() {
   const [image, setImage] = useState(
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdLAY3C19kL0nV2bI_plU3_YFCtra0dpsYkg&usqp=CAU"
   );
+
   useEffect(() => {
+    const checkForError = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const error = urlParams.get("error");
+      if (error) {
+        handleError(error);
+      }
+    };
+
     apiClient.get("me").then((response) => {
       setImage(response.data.images[0].url);
     });
+
+    checkForError();
   }, []);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("isLoggedIn");
+    window.location.href = "/login";
+  };
+
   return (
     <div className="sidebar-container">
       <img src={image} className="profile-img" alt="profile" />
@@ -31,7 +48,9 @@ export default function Sidebar() {
         />
         <SidebarButton title="Library" to="/" icon={<IoLibrary />} />
       </div>
-      <SidebarButton title="Sign Out" to="" icon={<FaSignOutAlt />} />
+      <div className="sign-out-btn" onClick={handleSignOut}>
+        <SidebarButton title="Sign Out" to="" icon={<FaSignOutAlt />} />
+      </div>
     </div>
   );
 }

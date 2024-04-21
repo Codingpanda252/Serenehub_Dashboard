@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Favorites() {
   const [likedSongs, setLikedSongs] = useState([]);
-  const [recentlyListenedSongs, setRecentlyListenedSongs] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
     const fetchLikedSongs = async () => {
@@ -19,23 +19,27 @@ export default function Favorites() {
       }
     };
 
-    const fetchRecentlyListenedSongs = async () => {
+    const fetchPlaylists = async () => {
       try {
-        const response = await APIKit.get("me/player/recently-played");
-        setRecentlyListenedSongs(response.data.items);
+        const response = await APIKit.get("me/playlists");
+        setPlaylists(response.data.items);
       } catch (error) {
-        console.error("Error fetching recently listened songs:", error);
+        console.error("Error fetching playlists:", error);
       }
     };
 
     fetchLikedSongs();
-    fetchRecentlyListenedSongs();
+    fetchPlaylists();
   }, []);
 
   const navigate = useNavigate();
 
   const playSong = (songId) => {
     navigate("/player", { state: { id: songId } });
+  };
+
+  const playPlaylist = (playlistId) => {
+    navigate("/player", { state: { id: playlistId } });
   };
 
   return (
@@ -73,24 +77,22 @@ export default function Favorites() {
           )}
         </div>
 
-        <h2>Recently Listened Songs</h2>
-        <div className="song-list">
-          {recentlyListenedSongs.length > 0 ? (
-            recentlyListenedSongs.map((song) => (
+        <h2>Frequently Listened</h2>
+        <div className="playlist-list">
+          {playlists.length > 0 ? (
+            playlists.map((playlist) => (
               <div
-                key={song.track.id}
-                className="song-card"
-                onClick={() => playSong(song.track.id)}
+                key={playlist.id}
+                className="playlist-card"
+                onClick={() => playPlaylist(playlist.id)}
               >
                 <img
-                  src={song.track.album.images[0].url}
-                  className="song-image"
-                  alt="Song Art"
+                  src={playlist.images[0]?.url}
+                  className="playlist-image"
+                  alt="Playlist Cover"
                 />
-                <p className="song-title">{song.track.name}</p>
-                <p className="song-artist">
-                  {song.track.artists.map((artist) => artist.name).join(", ")}
-                </p>
+                <p className="playlist-title">{playlist.name}</p>
+                <p className="playlist-owner">by {playlist.owner.display_name}</p>
                 <div className="play-icon">
                   <IconContext.Provider
                     value={{ size: "50px", color: "#E99D72" }}
@@ -101,7 +103,7 @@ export default function Favorites() {
               </div>
             ))
           ) : (
-            <p>No recently listened songs</p>
+            <p>No playlists available</p>
           )}
         </div>
       </div>

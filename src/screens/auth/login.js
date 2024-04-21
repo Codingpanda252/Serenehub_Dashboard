@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { loginEndpoint } from "../../spotify";
 import "./login.css";
 
@@ -34,12 +34,15 @@ export default function Login() {
   };
 
   // Check for errors on component mount
-  useState(() => {
+  useEffect(() => {
     checkForError();
   }, []);
 
   return (
     <div className="login-page">
+      <h1 className="auth-heading">SereneHub</h1>
+      <p className="tagline">Your Journey to Emotional Wellness Starts Here</p>
+      <h2 className="auth-connect">Connect your Spotify Account to get started</h2>
       <img
         src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_White.png"
         alt="logo-spotify"
