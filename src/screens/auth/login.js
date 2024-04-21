@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { loginEndpoint } from "../../spotify";
 import "./login.css";
 
-export default function Login() {
+const Login = () => {
   const [error, setError] = useState(null);
 
   const handleLogin = () => {
@@ -10,7 +10,6 @@ export default function Login() {
   };
 
   const handleSignup = () => {
-    // Redirect users to Spotify signup page
     window.location.href = "https://www.spotify.com/signup/";
   };
 
@@ -19,12 +18,10 @@ export default function Login() {
     handleLogin();
   };
 
-  // Handle errors by displaying error message
   const handleError = (errorMessage) => {
     setError(errorMessage);
   };
 
-  // Check if the page was redirected from Spotify with an error
   const checkForError = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const error = urlParams.get("error");
@@ -33,10 +30,11 @@ export default function Login() {
     }
   };
 
-  // Check for errors on component mount
   useEffect(() => {
     checkForError();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
 
   return (
     <div className="login-page">
@@ -69,3 +67,5 @@ export default function Login() {
     </div>
   );
 }
+
+export default Login;
